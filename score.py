@@ -29,9 +29,10 @@ def run(input_df):
     import json
     
     #vect!
-    pred = model.predict(input_df)
+    pred = model.predict(input_df['Text'])
     prediction_dc.collect(pred)
     return json.dumps(str(pred[0]))
+    #(str(pred[0]))
 
 def main():
     from azureml.api.schema.dataTypes import DataTypes
@@ -39,15 +40,15 @@ def main():
     from azureml.api.realtime.services import generate_schema
     import pandas
 
-    df = pandas.DataFrame(data=["What a waste of time and money! The story was not realistic at all! Actually it was completely far fetched!"], columns=['text'])
+    df = pandas.DataFrame(data=["What a waste of time and money! The story was not realistic at all! Actually it was completely far fetched!"], columns=['Text'])
 
     # Turn on data collection debug mode to view output in stdout
     os.environ["AML_MODEL_DC_DEBUG"] = 'true'
 
     # Test the output of the functions
     init()
-    input1 = ["What a waste of time and money! The story was not realistic at all! Actually it was completely far fetched!"]
-    print("The input {0} created the following output: {1}".format(input1, run(input1)))
+    input1 = pandas.DataFrame(data=["What a waste of time and money! The story was not realistic at all! Actually it was completely far fetched!"], columns=['Text'])
+    print("The input {0} created the following output: {1}".format(input1['Text'], run(input1)))
 
     inputs = {"input_df": SampleDefinition(DataTypes.PANDAS, df)}
 
