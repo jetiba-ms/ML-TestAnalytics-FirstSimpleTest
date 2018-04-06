@@ -12,7 +12,7 @@ except ImportError:
 import os
 
 def init():
-    global inputs_dc, prediction_dc
+    global model, inputs_dc, prediction_dc
     # Get the path to the model asset
     # local_path = get_local_path('mymodel.model.link')
     from sklearn.externals import joblib
@@ -20,19 +20,15 @@ def init():
     inputs_dc = ModelDataCollector("model.pkl", identifier="inputs")
     prediction_dc = ModelDataCollector("model.pkl", identifier="prediction")
 
-    # Load model using appropriate library and function
-    global model
     # model = model_load_function(local_path)
     model = joblib.load('model.pkl')
 
 def run(input_df):
     import json
     
-    #vect!
     pred = model.predict(input_df['Text'])
     prediction_dc.collect(pred)
     return json.dumps(str(pred[0]))
-    #(str(pred[0]))
 
 def main():
     from azureml.api.schema.dataTypes import DataTypes

@@ -26,12 +26,6 @@ def train_model(dataset):
     pipe1 = Pipeline([('vect', CountVectorizer(stop_words='english')),
                       ('nb', MultinomialNB())
     ])
-    
-    #X_train_dtm = vect.fit_transform(X_train)
-
-    #logger.log("train", X_train_dtm)
-
-    #nb = MultinomialNB()
 
     model = pipe1.fit(X_train, y_train)
 
@@ -43,10 +37,6 @@ def predict_review(model, test_dataset):
     X_test.shape
     y_test = test.Label
     y_test.shape
-
-    #X_test_dtm = vect.transform(X_test)
-
-    #logger.log("test", X_test_dtm)
     
     y_pred_class = model.predict(X_test)
 
