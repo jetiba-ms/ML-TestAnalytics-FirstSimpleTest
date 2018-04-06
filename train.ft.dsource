@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 39,
+  "id": "5360cd80-32f1-42e4-949a-7816ae9be28d",
+  "activities": [
+    {
+      "id": "8a14e121-320e-4e7c-8cfd-334bd7d1dc7f",
+      "name": "train.ft",
+      "blocks": [
+        {
+          "id": "8435ce93-7da3-4c5d-b0dc-d640a41ebaeb",
+          "type": "Microsoft.DPrep.DataSourceBlock",
+          "arguments": {
+            "path": {
+              "target": 0,
+              "resourceDetails": [
+                {
+                  "path": "C:\\Users\\jetiba\\Desktop\\train.ft.txt"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "40fc30e9-68e0-4c45-a1d9-10db2d6f0143",
+          "type": "Microsoft.DPrep.ParseFixedWidthColumns",
+          "arguments": {
+            "columnOffsets": [
+              1,
+              11
+            ],
+            "columnHeadersMode": 0,
+            "skipRowsMode": 0,
+            "fileEncoding": 0
+          }
+        },
+        {
+          "id": "8e9f953d-127e-497e-856c-57d90649b864",
+          "type": "Microsoft.DPrep.SetColumnTypesBlock",
+          "arguments": {
+            "columnConversion": []
+          }
+        },
+        {
+          "id": "81c65e3c-1537-441f-8745-32ea34429bb0",
+          "type": "Microsoft.DPrep.SampleBlock",
+          "arguments": {
+            "samples": [
+              {
+                "sampleId": "32c33ce5-c7ae-46d7-b2ce-c53159bc33c4",
+                "sampleRevision": "8cad31be-b7ba-4f33-9873-1ddb970f00c0",
+                "sampleName": "Top 10000",
+                "sampleRunner": {
+                  "id": null,
+                  "type": 0
+                },
+                "remoteGeneratorProperties": {},
+                "sampleStrategy": 0,
+                "topArguments": {
+                  "sampleCount": 10000
+                },
+                "randomNArguments": {
+                  "sampleCount": 10000
+                },
+                "randomPercentArguments": {
+                  "probability": 0.1
+                },
+                "allowAutoGen": true,
+                "isDisabled": false
+              }
+            ],
+            "activeSample": "32c33ce5-c7ae-46d7-b2ce-c53159bc33c4"
+          }
+        },
+        {
+          "id": "c6b9d012-72e1-43c1-b1a8-a11b59efa174",
+          "type": "Microsoft.DPrep.HandlePathColumnBlock",
+          "arguments": {
+            "pathColumnOperation": 0
+          }
+        }
+      ],
+      "inspectors": [
+        {
+          "id": "af1b39fe-6c9a-4e4e-a429-7c176d031457",
+          "type": "Microsoft.DPrep.DataQualityInspector",
+          "arguments": {},
+          "reference": {
+            "referenceType": 0,
+            "referenceContainerPath": null,
+            "referencedActivityId": "8a14e121-320e-4e7c-8cfd-334bd7d1dc7f",
+            "referencedBranchId": null,
+            "referencedStep": {
+              "stepReferenceType": 1,
+              "referencedStepId": null,
+              "fallback": 1
+            },
+            "anonymousSteps": null
+          },
+          "isBackground": false
+        },
+        {
+          "id": "51ff1751-20a0-43ed-a767-cf7561d4b67d",
+          "type": "Microsoft.DPrep.DataProfileInspector",
+          "arguments": {},
+          "reference": {
+            "referenceType": 0,
+            "referenceContainerPath": null,
+            "referencedActivityId": "8a14e121-320e-4e7c-8cfd-334bd7d1dc7f",
+            "referencedBranchId": null,
+            "referencedStep": {
+              "stepReferenceType": 0,
+              "referencedStepId": "c6b9d012-72e1-43c1-b1a8-a11b59efa174",
+              "fallback": 1
+            },
+            "anonymousSteps": null
+          },
+          "isBackground": true
+        }
+      ]
+    }
+  ],
+  "runConfigurations": []
+}

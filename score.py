@@ -1,58 +1,61 @@
-# This script generates the scoring and schema files
-# necessary to operationalize your model
-from azureml.api.schema.dataTypes import DataTypes
-from azureml.api.schema.sampleDefinition import SampleDefinition
-from azureml.api.realtime.services import generate_schema
-from azureml.assets import get_local_path
+try:
+    from azureml.datacollector import ModelDataCollector
+except ImportError:
+    print("Data collection is currently only supported in docker mode. May be disabled for local mode.")
+    # Mocking out model data collector functionality
+    class ModelDataCollector(object):
+        def nop(*args, **kw): pass
+        def __getattr__(self, _): return self.nop
+        def __init__(self, *args, **kw): return None
+    pass
 
-# Prepare the web service definition by authoring
-# init() and run() functions. Test the functions
-# before deploying the web service.
-
-model = None
+import os
 
 def init():
+    global inputs_dc, prediction_dc
     # Get the path to the model asset
     # local_path = get_local_path('mymodel.model.link')
+    from sklearn.externals import joblib
     
+    inputs_dc = ModelDataCollector("model.pkl", identifier="inputs")
+    prediction_dc = ModelDataCollector("model.pkl", identifier="prediction")
+
     # Load model using appropriate library and function
     global model
     # model = model_load_function(local_path)
-    model = 42
+    model = joblib.load('model.pkl')
 
 def run(input_df):
     import json
     
-    # Predict using appropriate functions
-    # prediction = model.predict(input_df)
+    #vect!
+    pred = model.predict(input_df)
+    prediction_dc.collect(pred)
+    return json.dumps(str(pred[0]))
 
-    prediction = "%s %d" % (str(input_df), model)
-    return json.dumps(str(prediction))
+def main():
+    from azureml.api.schema.dataTypes import DataTypes
+    from azureml.api.schema.sampleDefinition import SampleDefinition
+    from azureml.api.realtime.services import generate_schema
+    import pandas
 
-def generate_api_schema():
-    import os
-    print("create schema")
-    sample_input = "sample data text"
-    inputs = {"input_df": SampleDefinition(DataTypes.STANDARD, sample_input)}
-    os.makedirs('outputs', exist_ok=True)
-    print(generate_schema(inputs=inputs, filepath="outputs/schema.json", run_func=run))
+    df = pandas.DataFrame(data=["What a waste of time and money! The story was not realistic at all! Actually it was completely far fetched!"], columns=['text'])
+
+    # Turn on data collection debug mode to view output in stdout
+    os.environ["AML_MODEL_DC_DEBUG"] = 'true'
+
+    # Test the output of the functions
+    init()
+    input1 = ["What a waste of time and money! The story was not realistic at all! Actually it was completely far fetched!"]
+    print("The input {0} created the following output: {1}".format(input1, run(input1)))
+
+    inputs = {"input_df": SampleDefinition(DataTypes.PANDAS, df)}
+
+    #Genereate the schema
+    generate_schema(run_func=run, inputs=inputs, filepath='./outputs/service_schema.json')
+    print("Schema generated")
+
 
 # Implement test code to run in IDE or Azure ML Workbench
 if __name__ == '__main__':
-    # Import the logger only for Workbench runs
-    from azureml.logging import get_azureml_logger
-
-    logger = get_azureml_logger()
-
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--generate', action='store_true', help='Generate Schema')
-    args = parser.parse_args()
-
-    if args.generate:
-        generate_api_schema()
-
-    init()
-    input = "{}"
-    result = run(input)
-    logger.log("Result",result)
+    main()

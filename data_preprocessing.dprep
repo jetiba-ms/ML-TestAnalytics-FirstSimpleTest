@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 39,
+  "id": "1195c5a8-038d-4973-93bc-49014a78af11",
+  "activities": [
+    {
+      "id": "cbebde17-52ab-4881-8946-dec2aaeb1be9",
+      "name": "train.ft",
+      "blocks": [
+        {
+          "id": "c9296142-5b49-4ef1-bf59-a8f8e145e6f0",
+          "type": "Microsoft.DPrep.ReferenceActivityBlock",
+          "arguments": {
+            "reference": {
+              "referenceType": 1,
+              "referenceContainerPath": "./train.ft.dsource",
+              "referencedActivityId": "8a14e121-320e-4e7c-8cfd-334bd7d1dc7f",
+              "referencedBranchId": null,
+              "referencedStep": null,
+              "anonymousSteps": null
+            }
+          }
+        },
+        {
+          "id": "0b813f03-d3e5-4597-a1ff-7cb9c6f95f80",
+          "type": "Microsoft.DPrep.DeleteColumnBlock",
+          "arguments": {
+            "columnIds": [
+              "Column1"
+            ]
+          }
+        },
+        {
+          "id": "cbc71b16-9282-4bc6-9eed-b46670cbdf48",
+          "type": "Microsoft.DPrep.ReplaceValuesBlock",
+          "arguments": {
+            "valueToFind": "_label__",
+            "matchEntireCellContents": false,
+            "useSpecialCharacters": false,
+            "columnIds": [
+              "Column2"
+            ],
+            "replaceWithNone": true
+          }
+        },
+        {
+          "id": "51a77122-e8aa-41b5-adf5-0140c5a5639e",
+          "type": "Microsoft.DPrep.ReplaceValuesBlock",
+          "arguments": {
+            "valueToFind": "1",
+            "replaceWith": "0",
+            "matchEntireCellContents": false,
+            "useSpecialCharacters": false,
+            "columnIds": [
+              "Column2"
+            ],
+            "replaceWithNone": false
+          }
+        },
+        {
+          "id": "071dcd1b-3dd5-44c9-8655-1267d760d8b9",
+          "type": "Microsoft.DPrep.ReplaceValuesBlock",
+          "arguments": {
+            "valueToFind": "2",
+            "replaceWith": "1",
+            "matchEntireCellContents": false,
+            "useSpecialCharacters": false,
+            "columnIds": [
+              "Column2"
+            ],
+            "replaceWithNone": false
+          }
+        },
+        {
+          "id": "733fc211-a000-4b76-959a-e7c9a99f1920",
+          "type": "Microsoft.DPrep.ColumnRenameBlock",
+          "arguments": {
+            "newColumnId": "Label",
+            "columnId": "Column2"
+          }
+        },
+        {
+          "id": "2159ca04-eef7-47a7-9d36-af29cd4c934d",
+          "type": "Microsoft.DPrep.ColumnRenameBlock",
+          "arguments": {
+            "newColumnId": "Text",
+            "columnId": "Column3"
+          }
+        },
+        {
+          "id": "5f2b1592-335e-485a-b1ec-83d5c687e137",
+          "type": "Microsoft.DPrep.TrimStringBlock",
+          "arguments": {
+            "trimLeft": true,
+            "trimRight": true,
+            "trimType": 0,
+            "customCharacters": "",
+            "columnIds": [
+              "Label"
+            ]
+          }
+        },
+        {
+          "id": "82fd1dbd-c746-4db4-b9da-928c068ad1c6",
+          "type": "Microsoft.DPrep.TrimStringBlock",
+          "arguments": {
+            "trimLeft": true,
+            "trimRight": true,
+            "trimType": 0,
+            "customCharacters": "",
+            "columnIds": [
+              "Text"
+            ]
+          }
+        },
+        {
+          "id": "e915dd68-0ef9-4016-a655-3776fd4aea53",
+          "type": "Microsoft.DPrep.WriteToCsvBlock",
+          "arguments": {
+            "path": {
+              "target": 0,
+              "resourceDetails": [
+                {
+                  "path": "./data/preprocessed-data.csv"
+                }
+              ]
+            },
+            "eol": 1,
+            "na": "NA",
+            "error": "ERROR",
+            "separator": ","
+          }
+        }
+      ],
+      "inspectors": [
+        {
+          "id": "9c2dcac2-6ea5-4b0e-ac78-12d5c0284818",
+          "type": "Microsoft.DPrep.DataQualityInspector",
+          "arguments": {},
+          "reference": {
+            "referenceType": 0,
+            "referenceContainerPath": null,
+            "referencedActivityId": "cbebde17-52ab-4881-8946-dec2aaeb1be9",
+            "referencedBranchId": null,
+            "referencedStep": {
+              "stepReferenceType": 1,
+              "referencedStepId": null,
+              "fallback": 1
+            },
+            "anonymousSteps": null
+          },
+          "isBackground": false
+        },
+        {
+          "id": "cd670427-fa03-4f91-8355-6d8cc83683db",
+          "type": "Microsoft.DPrep.ValueCountInspector",
+          "arguments": {
+            "columnId": "Label",
+            "numberOfTopValues": 6,
+            "descending": true,
+            "includeNulls": true,
+            "haloEffect": true,
+            "logScale": false
+          },
+          "reference": {
+            "referenceType": 0,
+            "referenceContainerPath": null,
+            "referencedActivityId": "cbebde17-52ab-4881-8946-dec2aaeb1be9",
+            "referencedBranchId": null,
+            "referencedStep": {
+              "stepReferenceType": 1,
+              "referencedStepId": null,
+              "fallback": 1
+            },
+            "anonymousSteps": null
+          },
+          "isBackground": true
+        }
+      ]
+    }
+  ],
+  "runConfigurations": []
+}

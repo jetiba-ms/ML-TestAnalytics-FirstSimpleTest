@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 39,
+  "id": "a4dddac9-0204-4b13-8d22-a7900f48f598",
+  "activities": [
+    {
+      "id": "936ace9c-7b4e-4dbf-9ef7-561555ed3b6e",
+      "name": "test.ft",
+      "blocks": [
+        {
+          "id": "1bcd3360-7177-409c-b734-e1328b3ee73c",
+          "type": "Microsoft.DPrep.ReferenceActivityBlock",
+          "arguments": {
+            "reference": {
+              "referenceType": 1,
+              "referenceContainerPath": "./test.ft.dsource",
+              "referencedActivityId": "82a8a760-ce6f-4d08-9c9f-05ee1054d0a2",
+              "referencedBranchId": null,
+              "referencedStep": null,
+              "anonymousSteps": null
+            }
+          }
+        },
+        {
+          "id": "9cf76f27-df88-44a1-ba6c-eb7ff2633a88",
+          "type": "Microsoft.DPrep.DeleteColumnBlock",
+          "arguments": {
+            "columnIds": [
+              "Column1"
+            ]
+          }
+        },
+        {
+          "id": "3cfdc829-10d3-46cd-ae1a-44259f25ca07",
+          "type": "Microsoft.DPrep.ReplaceValuesBlock",
+          "arguments": {
+            "valueToFind": "_label__",
+            "matchEntireCellContents": false,
+            "useSpecialCharacters": false,
+            "columnIds": [
+              "Column2"
+            ],
+            "replaceWithNone": true
+          }
+        },
+        {
+          "id": "8d3316ed-4be8-4982-8549-b16694790382",
+          "type": "Microsoft.DPrep.ReplaceValuesBlock",
+          "arguments": {
+            "valueToFind": "1",
+            "replaceWith": "0",
+            "matchEntireCellContents": false,
+            "useSpecialCharacters": false,
+            "columnIds": [
+              "Column2"
+            ],
+            "replaceWithNone": false
+          }
+        },
+        {
+          "id": "421c5c86-2e24-4f31-9be5-67b45bb603e9",
+          "type": "Microsoft.DPrep.ReplaceValuesBlock",
+          "arguments": {
+            "valueToFind": "2",
+            "replaceWith": "1",
+            "matchEntireCellContents": false,
+            "useSpecialCharacters": false,
+            "columnIds": [
+              "Column2"
+            ],
+            "replaceWithNone": false
+          }
+        },
+        {
+          "id": "5b646f0a-1db8-47a5-b6c0-be5e88e66d79",
+          "type": "Microsoft.DPrep.ColumnRenameBlock",
+          "arguments": {
+            "newColumnId": "Text",
+            "columnId": "Column3"
+          }
+        },
+        {
+          "id": "8a844570-039b-466d-a927-50e168c317ac",
+          "type": "Microsoft.DPrep.ColumnRenameBlock",
+          "arguments": {
+            "newColumnId": "Label",
+            "columnId": "Column2"
+          }
+        },
+        {
+          "id": "f9fb273e-ffb9-4f32-9353-2d703209dca3",
+          "type": "Microsoft.DPrep.TrimStringBlock",
+          "arguments": {
+            "trimLeft": true,
+            "trimRight": true,
+            "trimType": 0,
+            "customCharacters": "",
+            "columnIds": [
+              "Label"
+            ]
+          }
+        },
+        {
+          "id": "33e3af01-ce03-4482-b81e-211453a04e2d",
+          "type": "Microsoft.DPrep.TrimStringBlock",
+          "arguments": {
+            "trimLeft": true,
+            "trimRight": true,
+            "trimType": 0,
+            "customCharacters": "",
+            "columnIds": [
+              "Text"
+            ]
+          }
+        },
+        {
+          "id": "66080f58-71fe-45bf-a809-43085a20ef69",
+          "type": "Microsoft.DPrep.WriteToCsvBlock",
+          "arguments": {
+            "path": {
+              "target": 0,
+              "resourceDetails": [
+                {
+                  "path": "./data/preprocessed-test.csv"
+                }
+              ]
+            },
+            "eol": 1,
+            "na": "NA",
+            "error": "ERROR",
+            "separator": ","
+          }
+        }
+      ],
+      "inspectors": [
+        {
+          "id": "8db9e3d3-3422-4ca3-9881-f5faf925e1c3",
+          "type": "Microsoft.DPrep.DataQualityInspector",
+          "arguments": {},
+          "reference": {
+            "referenceType": 0,
+            "referenceContainerPath": null,
+            "referencedActivityId": "936ace9c-7b4e-4dbf-9ef7-561555ed3b6e",
+            "referencedBranchId": null,
+            "referencedStep": {
+              "stepReferenceType": 1,
+              "referencedStepId": null,
+              "fallback": 1
+            },
+            "anonymousSteps": null
+          },
+          "isBackground": false
+        }
+      ]
+    }
+  ],
+  "runConfigurations": []
+}
