@@ -2,6 +2,7 @@
 .ipynb_checkpoints
 azureml-logs
 *.dprep.user
+*.dsource.user
 .vscode/settings.json
 /data/*
 
